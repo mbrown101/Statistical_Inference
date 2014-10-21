@@ -1,0 +1,13 @@
+# mean of 100 randomly selected values from uniform distro on [0,1]
+avgs <- mean(runif(100,0,1))
+
+# trials
+for (i in 1:20){
+    # concatinate each average from 100 randomly selected draws
+    avgs <- c(avgs , mean(runif(100,0,1)))
+    #print(avgs)
+    
+}
+
+#find standard deviation of the means
+print(sd(avgs))

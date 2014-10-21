@@ -1,0 +1,12 @@
+
+## Note, for 95% student T confidence interval, need to select at .975 because we are finding the location on the right tail
+## where there is 0.025 to the right.  Adding the error to the average gives the right boundry and subtracting gives left boundry
+
+a <- 1100
+s <- 30
+n <- 9
+error <- qt(0.975,df=n-1)*s/sqrt(n)
+left <- a-error
+right <- a+error
+left
+right

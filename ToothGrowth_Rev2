@@ -1,0 +1,66 @@
+---
+title: "Statistical Inference Tooth Growth"
+author: "Michael Brown"
+date: "Sunday, January 18, 2015"
+output: html_document
+---
+### High Level Data Analysis (A.K.A. What is in ToothGrowth)
+
+```{r, echo=FALSE}
+# Preliminarty config
+
+attach(ToothGrowth)
+
+doses <- unique(ToothGrowth$dose)
+meanLength <- aggregate(ToothGrowth$len , list(ToothGrowth$dose) , mean)
+colnames(meanLength) <- c('dose' , 'mean_length')
+
+
+
+```
+
+```{r}
+
+
+# Data dimensions and observations:
+names(ToothGrowth)
+nrow(ToothGrowth)
+
+
+# Head and tail of data:
+head(ToothGrowth)
+
+tail(ToothGrowth)
+
+# Data structure:
+str(ToothGrowth)
+
+
+#Summary of content:
+summary(ToothGrowth)
+
+
+  
+```
+
+
+
+```{r, echo=TRUE}
+# Plot pairs of each data
+pairs(ToothGrowth)
+
+plot(len, dose, main="Tooth Length v. Dose", xlab="Length ", ylab="Dose ", pch=19)
+plot(meanLength$mean_length , meanLength$dose , main="Mean Tooth Length v. Dose", xlab="Length ", ylab="Dose ", pch=19)
+
+```
+
+# Hypothesis Testing
+### Null Hypothesis H0: Tooth length is uneffected by Dose 
+### Alternative Hypothesis H1: Tooth length is effected by Dose 
+
+### The hypothesis will be tested by comparing the tooth growth for low doses of Vitamin C and OJ (0.5) and high doses of Vitamin C ### and OJ (2.0). We find the mean for each condition as follows: 
+
+####    mean tooth growth for 0.5 Vitamin C =  `r mean(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1])`
+####    mean tooth growth for 2.0 Vitamin C =  `r mean(subset(ToothGrowth , supp == 'VC' & dose == 2.0 )[,1])`
+####    mean tooth growth for 0.5 OJ =  `r mean(subset(ToothGrowth , supp == 'OJ' & dose == 0.5 )[,1])`
+####    mean tooth growth for 2.0 OJ =  `r mean(subset(ToothGrowth , supp == 'OJ' & dose == 2.0 )[,1])`

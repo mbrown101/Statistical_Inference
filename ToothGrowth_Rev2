@@ -58,9 +58,20 @@ plot(meanLength$mean_length , meanLength$dose , main="Mean Tooth Length v. Dose"
 ### Null Hypothesis H0: Tooth length is uneffected by Dose 
 ### Alternative Hypothesis H1: Tooth length is effected by Dose 
 
-### The hypothesis will be tested by comparing the tooth growth for low doses of Vitamin C and OJ (0.5) and high doses of Vitamin C ### and OJ (2.0). We find the mean for each condition as follows: 
+### The hypothesis will be tested by comparing the tooth growth for low doses of Vitamin C and OJ (0.5) and high doses of Vitamin C ### and OJ (2.0). We find the means for each condition as follows: 
 
 ####    mean tooth growth for 0.5 Vitamin C =  `r mean(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1])`
+####
 ####    mean tooth growth for 2.0 Vitamin C =  `r mean(subset(ToothGrowth , supp == 'VC' & dose == 2.0 )[,1])`
 ####    mean tooth growth for 0.5 OJ =  `r mean(subset(ToothGrowth , supp == 'OJ' & dose == 0.5 )[,1])`
 ####    mean tooth growth for 2.0 OJ =  `r mean(subset(ToothGrowth , supp == 'OJ' & dose == 2.0 )[,1])`
+
+#### Determining threshold for accepting or rejection H0 at a 95% confidence interval:
+
+##### P( X̄  > C  ; H0 ) = 0.05
+
+##### Provided the tooth growth data is normally distributed, the 95% precentile is 1.645 standard deviations from the mean.
+##### The standard error of the mean is the standard error / sqrt(sample size) = `r sd(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1]) / sqrt(length(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1]))`
+
+##### We reject H0 if the mean tooth growth for the 2.0 vitamin c is > `r 7.98 + .8685*1.645` 
+##### With the mean tooth growth of 26.14, it is clearly  

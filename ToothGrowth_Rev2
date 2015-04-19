@@ -4,7 +4,9 @@ author: "Michael Brown"
 date: "Sunday, January 18, 2015"
 output: html_document
 ---
-### High Level Data Analysis (A.K.A. What is in ToothGrowth)
+### Objective
+#### This project will analyize and and conduct hypothesis testing on the tooth growth R data package.  The data specifically documentstThe Effect of Vitamin C on Tooth Growth in Guinea Pigs and is found at https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/ToothGrowth.html
+
 
 ```{r, echo=FALSE}
 # Preliminarty config
@@ -70,8 +72,14 @@ plot(meanLength$mean_length , meanLength$dose , main="Mean Tooth Length v. Dose"
 
 ##### P( X̄  > C  ; H0 ) = 0.05
 
-##### Provided the tooth growth data is normally distributed, the 95% precentile is 1.645 standard deviations from the mean.
+##### Provided the tooth growth data is normally distributed, the 95% precetile is 1.645 standard deviations from the mean.
 ##### The standard error of the mean is the standard error / sqrt(sample size) = `r sd(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1]) / sqrt(length(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1]))`
-
+##### **For Vitamin C**
 ##### We reject H0 if the mean tooth growth for the 2.0 vitamin c is > `r 7.98 + .8685*1.645` 
-##### With the mean tooth growth of 26.14, it is clearly  
+##### With the mean tooth growth of 26.14, the mean for the 2.0 Vitamic C is clearly greater than the rejection criteria of 9.4086
+
+##### **For OJ**
+##### The standard error of the mean is the standard error / sqrt(sample size) = `r sd(subset(ToothGrowth , supp == 'OJ' & dose == 0.5 )[,1]) / sqrt(length(subset(ToothGrowth , supp == 'OJ' & dose == 0.5 )[,1]))`
+
+##### We reject H0 if the mean tooth growth for the 2.0 OJ is > `r 13.23 + 1.41028*1.645` 
+##### With the mean tooth growth of 26.14, it is clearly greater than 15.5499  

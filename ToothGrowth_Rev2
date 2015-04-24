@@ -1,85 +1,131 @@
 ---
 title: "Statistical Inference Tooth Growth"
 author: "Michael Brown"
-date: "Sunday, January 18, 2015"
+date: "April, 2015"
 output: html_document
 ---
+
 ### Objective
-#### This project will analyize and and conduct hypothesis testing on the tooth growth R data package.  The data specifically documentstThe Effect of Vitamin C on Tooth Growth in Guinea Pigs and is found at https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/ToothGrowth.html
+This project will analyze and conduct hypothesis testing on data describing the Effect of Vitamin C on Tooth Growth in Guinea Pigs.  The data is described at https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/ToothGrowth.htmland and conduct hypothesis testing on the tooth growth R data package. 
 
 
 ```{r, echo=FALSE}
-# Preliminarty config
-
+# Preliminary config
 attach(ToothGrowth)
-
-doses <- unique(ToothGrowth$dose)
-meanLength <- aggregate(ToothGrowth$len , list(ToothGrowth$dose) , mean)
-colnames(meanLength) <- c('dose' , 'mean_length')
-
-
-
+library(ggplot2)
+toothGrowth <- as.data.frame(ToothGrowth)
 ```
+### Data Exploration 
+#### Data structure:
+We first examine the data structure to find 60 records in a wide format describing tooth length (len), supplement (supp) and dose.  The supplements are represented as a factor and take on values of either Vitamin C (VC) or Orange Juice (OJ).  Doses are administered at 3 unique levels (0.5 , 1.0 and 2.0 mg).
 
 ```{r}
+# Unique dose values
+unique(ToothGrowth[,3])
 
-
-# Data dimensions and observations:
-names(ToothGrowth)
-nrow(ToothGrowth)
-
-
-# Head and tail of data:
-head(ToothGrowth)
-
-tail(ToothGrowth)
+# Unique supplement values
+unique(ToothGrowth[,2])
 
 # Data structure:
 str(ToothGrowth)
 
-
-#Summary of content:
+# Summary of content:
 summary(ToothGrowth)
 
-
+# Head and tail of data:
+head(ToothGrowth)
+tail(ToothGrowth)
   
 ```
 
 
+#### Exploration of Data Relationship using Plots 
+Plotting the data, using the pair function, a relationship emerges between there appears between dose and tooth length.
 
-```{r, echo=TRUE}
+
+```{r, echo=FALSE}
+
 # Plot pairs of each data
 pairs(ToothGrowth)
 
-plot(len, dose, main="Tooth Length v. Dose", xlab="Length ", ylab="Dose ", pch=19)
-plot(meanLength$mean_length , meanLength$dose , main="Mean Tooth Length v. Dose", xlab="Length ", ylab="Dose ", pch=19)
+```
+
+We further examine the relationship by plotting tooth growth by dose. This plot suggests a relationship between dose and tooth length.  
+
+```{r, echo=FALSE}
+
+qplot(len , dose , data = toothGrowth , facets = ~supp)
 
 ```
 
-# Hypothesis Testing
-### Null Hypothesis H0: Tooth length is uneffected by Dose 
-### Alternative Hypothesis H1: Tooth length is effected by Dose 
+Conducting a bulk analysis by plotting mean tooth growth v. dose, again lumping the supplement together, we can observe an increase in mean tooth length with an increase in dose.
 
-### The hypothesis will be tested by comparing the tooth growth for low doses of Vitamin C and OJ (0.5) and high doses of Vitamin C ### and OJ (2.0). We find the means for each condition as follows: 
+```{r echo=FALSE}
+meanLength <- aggregate(ToothGrowth$len , list(ToothGrowth$dose) , mean)
+colnames(meanLength) <- c('dose' , 'mean_length')
 
-####    mean tooth growth for 0.5 Vitamin C =  `r mean(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1])`
-####
-####    mean tooth growth for 2.0 Vitamin C =  `r mean(subset(ToothGrowth , supp == 'VC' & dose == 2.0 )[,1])`
-####    mean tooth growth for 0.5 OJ =  `r mean(subset(ToothGrowth , supp == 'OJ' & dose == 0.5 )[,1])`
-####    mean tooth growth for 2.0 OJ =  `r mean(subset(ToothGrowth , supp == 'OJ' & dose == 2.0 )[,1])`
+qplot(dose , mean_length , data = meanLength , xlab = 'Dose' , ylab = 'Mean Length' , main = 'Dose v. Mean Length') +
+  geom_line(colour="red", linetype="dashed", size=1.5)
 
-#### Determining threshold for accepting or rejection H0 at a 95% confidence interval:
+```
 
-##### P( X̄  > C  ; H0 ) = 0.05
+##Hypothesis Testing
+Based on observations in the data exploration section, we will assert that an increase in dose of supplements OJ or vitamin C will result in an increase in tooth length.  Since we do not specify the form of the suppplement, we need to examine the effect of each supplement separately.  In the study that follows we assess outcomes for the high (2.0 mg) and the low (0.5 mg) doses of each supplement.  
 
-##### Provided the tooth growth data is normally distributed, the 95% precetile is 1.645 standard deviations from the mean.
-##### The standard error of the mean is the standard error / sqrt(sample size) = `r sd(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1]) / sqrt(length(subset(ToothGrowth , supp == 'VC' & dose == 0.5 )[,1]))`
-##### **For Vitamin C**
-##### We reject H0 if the mean tooth growth for the 2.0 vitamin c is > `r 7.98 + .8685*1.645` 
-##### With the mean tooth growth of 26.14, the mean for the 2.0 Vitamic C is clearly greater than the rejection criteria of 9.4086
+###Hypothesis testing for Vitamin C
+Regarding Vitamin C as the supplement and independent variable, we form the hypothesis as:
 
-##### **For OJ**
-##### The standard error of the mean is the standard error / sqrt(sample size) = `r sd(subset(ToothGrowth , supp == 'OJ' & dose == 0.5 )[,1]) / sqrt(length(subset(ToothGrowth , supp == 'OJ' & dose == 0.5 )[,1]))`
+<br>   Hypothesis: Tooth Growth is not effected by Vitamin C
+<br>   Ho: Tooth Growth is unaffected by increases in Vitamin C dose
+<br>   Ha: Tooth Growth is effected by increases in Vitamin C dose 
 
-##### We reject H0 if the mean tooth growth for the 2.0 OJ is > `r 13.23 + 1.41028*1.645` 
-##### With the mean tooth growth of 26.14, it is clearly greater than 15.5499  
+<br>   Thus H0 : μ1 = μ2
+<br>   Recasting: H0: μ1 - μ2 = 0 
+<br>   μ1  =  case where dose is 0.5mg of Vitamin C
+<br>   μ2  =  case where dose is 2.0mg of Vitamin C 
+
+To direct our actions as to accepting or rejecting the null hypothesis (tooth growth is not effected by vitamin C, we conduct Hypothesis and Testing for Vitamin C using a t-test at a confidence interval (CI) of 95%.  If the t-statistic for the data is outside the threshold, we will reject the null hypothesis and accept the alternative hypothesis that vitamin C increases tooth growth.  Otherwise, we will retain the null hypothesis that tooth growth is insensitive to vitamin c. 
+
+
+```{r}
+#### Subset data to isolate high and low doses of vitamin C
+data_vc_0.5 <- subset(ToothGrowth , supp == 'VC' & dose == 0.5)[,1]
+data_vc_2.0 <- subset(ToothGrowth , supp == 'VC' & dose == 2.0)[,1]
+
+##### Run t-test
+t.test(data_vc_2.0 , data_vc_0.5 , paired = FALSE , var.equal = FALSE , conf.level = 0.95)
+````
+
+###Interpretation and Conclusion for Results for two doses of Vitamin C:
+The t-test results above show the resulting t-statistic lies well outside the 95% confidence interval. We therefore reject the null hypotheses that there was no difference in tooth growth with dose in Vitamin C.  The probability this conclusion is in error is shown in the p-value of an infinitesimally small 4.682 e-8.
+
+##Hypothesis testing for Orange Juice (OJ)
+This analysis will proceed in a similar fashion to the analysis for vitamin C. In this analysis OJ is the supplement and independent variable. We form the hypothesis as:
+
+<br>   Hypothesis: Tooth Growth is not effected by OJ
+<br>   Ho: Tooth Growth is unaffected by increases in OJ dose
+<br>   Ha: Tooth Growth is effected by increases in OJ dose 
+
+   Thus H0 : μ1 = μ2
+<br>   Recasting: H0: μ1 - μ2 = 0 
+<br>   μ1  =  case where dose is 0.5mg of OJ
+<br>   μ2  =  case where dose is 2.0mg of OJ
+
+We will accept or reject the null hypothesis (tooth growth is not effected by OJ, based on the t-statistic with a confidence interval (CI)  of 95%. 
+
+
+```{r}
+
+##### Subset for OJ as supplement and separate by dose focusing on the high and low dose 
+data_oj_0.5 <- subset(ToothGrowth , supp == 'OJ' & dose == 0.5)[,1]
+data_oj_2.0 <- subset(ToothGrowth , supp == 'OJ' & dose == 2.0)[,1]
+
+##### Run t-test:
+t.test(data_oj_2.0 , data_oj_0.5 , paired = FALSE , var.equal = FALSE , conf.level = 0.95)
+````
+###Interpretation and Conclusion for Results for two doses of OJ:
+The t-test results above show the resulting t-statistic lies well outside the 95% confidence interval. We therefore reject the null hypotheses that there was no difference in tooth growth with dose in OJ.  The probability this conclusion is in error is shown in the very small p-value.
+
+
+## Overall Conclusion 
+For both OJ and Vitamin C, we rejected the null hypothesis based on the results of the t-test.  In both cases, the t-test indicated that the sample mean of the higher concentration of dose (2.0 mg) was 95% likely to fall outside the distribution of the sample means of the lower concentration (0.5 mg) for both supplements.  

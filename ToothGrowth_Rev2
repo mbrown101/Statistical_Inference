@@ -8,6 +8,9 @@ output: html_document
 ### Objective
 This project will analyze and conduct hypothesis testing on data describing the Effect of Vitamin C on Tooth Growth in Guinea Pigs.  The data is described at https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/ToothGrowth.htmland and conduct hypothesis testing on the tooth growth R data package. 
 
+### Executive Summary - Tooth Growth Related to Vitamin C and OJ
+Data exploration of Guinea Pig tooth growth under different supplements (Vitamin C and OJ) revealed a potential relationship of tooth length v. supplement concentration.  Specifically, a higher concentration of vitamin C or OJ produced longer tooth length. In order to investigate this finding, hypothesis testing was conducted for high (2.0 mg) and low (0.5 mg) concentrations of two supplements (vitamin C and OJ). The hypothesis testing revealed that at the 95% confidence interval, tooth growth at high levels of vitamin C and OJ was indeed greater than at the lower levels of the supplement.  Specifically, the null hypothesis that there was no difference in tooth growth between high and low concentration of vitamin C and OJ was rejected and the alternative hypothesis that tooth growth was indeed effected by higher levels of the supplements was accepted.    
+
 
 ```{r, echo=FALSE}
 # Preliminary config
@@ -54,7 +57,7 @@ We further examine the relationship by plotting tooth growth by dose. This plot 
 
 ```{r, echo=FALSE}
 
-qplot(len , dose , data = toothGrowth , facets = ~supp)
+qplot(dose , len  , data = toothGrowth , facets = ~supp)
 
 ```
 
@@ -127,5 +130,5 @@ t.test(data_oj_2.0 , data_oj_0.5 , paired = FALSE , var.equal = FALSE , conf.lev
 The t-test results above show the resulting t-statistic lies well outside the 95% confidence interval. We therefore reject the null hypotheses that there was no difference in tooth growth with dose in OJ.  The probability this conclusion is in error is shown in the very small p-value.
 
 
-## Overall Conclusion 
-For both OJ and Vitamin C, we rejected the null hypothesis based on the results of the t-test.  In both cases, the t-test indicated that the sample mean of the higher concentration of dose (2.0 mg) was 95% likely to fall outside the distribution of the sample means of the lower concentration (0.5 mg) for both supplements.  
+## Overall Conclusion - Tooth Growth increases with dose of Vitamin C and OJ.
+For both OJ and Vitamin C, we rejected the null hypothesis based on the results of the t-test.  In both cases, the t-test indicated that the sample mean of the higher concentration of dose (2.0 mg) fell outside the 95% confidence interval.  We therefore accept teh alterhative hypothesis that tooth growth is related to the supplements of vitamin C and OJ.   

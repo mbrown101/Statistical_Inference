@@ -132,4 +132,4 @@ The t-test results above show the resulting t-statistic lies well outside the 95
 
 
 ## Overall Conclusion - Tooth Growth increases with dose of Vitamin C and OJ.
-For both OJ and Vitamin C, we rejected the null hypothesis (tooth growth is not effected by increasing levels of vitamin c and OJ) and accept the alternative hypothesis (tooth growth increases with increasing doses of vitamin C and OK) based on the results of the t-test.  In both cases, the t-test indicated that the sample mean of the higher concentration of dose (2.0 mg) fell outside the 95% confidence interval.  
+For both OJ and Vitamin C, we rejected the null hypothesis (tooth growth is not effected by increasing levels of vitamin c and OJ) and accept the alternative hypothesis (tooth growth increases with increasing doses of vitamin C and OJ) based on the results of the t-test.  In both cases, the t-test indicated that the sample mean of the higher concentration of dose (2.0 mg) fell outside the 95% confidence interval.  

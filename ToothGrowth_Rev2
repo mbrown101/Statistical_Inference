@@ -57,7 +57,7 @@ We further examine the relationship by plotting tooth growth by dose. This plot 
 
 ```{r, echo=FALSE}
 
-qplot(dose , len  , data = toothGrowth , facets = ~supp)
+qplot(dose , len  , data = toothGrowth , facets = ~supp) 
 
 ```
 
@@ -67,8 +67,9 @@ Conducting a bulk analysis by plotting mean tooth growth v. dose, again lumping 
 meanLength <- aggregate(ToothGrowth$len , list(ToothGrowth$dose) , mean)
 colnames(meanLength) <- c('dose' , 'mean_length')
 
-qplot(dose , mean_length , data = meanLength , xlab = 'Dose' , ylab = 'Mean Length' , main = 'Dose v. Mean Length') +
-  geom_line(colour="red", linetype="dashed", size=1.5)
+qplot(dose , mean_length , data = meanLength , xlab = 'Dose' , ylab = 'Mean Length' , main = 'Dose v. Mean Length' ) +
+  geom_line(colour="red", linetype="dashed", size=1.5) +
+  geom_point(size=3.0)
 
 ```
 
